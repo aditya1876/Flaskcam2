@@ -11,6 +11,33 @@ def generate_frames():
         if not success:
             break
         else:
+
+            #create detectors based on the haarcascade xmls
+            face_cascade=cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_default.xml')
+            eye_cascade=cv2.CascadeClassifier('Haarcascades/haarcascade_eye.xml')
+
+            #detect faces using the cascade created
+            faces=face_cascade.detectMultiScale(frame,1.1,7)
+
+            #create a gray version of image
+            gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+
+            #Draw rectangle aroud each face
+            for(x,y,w,h) in faces:
+                #draw rectangle around the face
+                cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+
+                #create smaller gray image for eye detection
+                roi_gray=gray[y:y+h, x:x+w]
+                roi_color=frame[y:y+h, x:x+w]
+
+                #detect eyes based on the cascade created
+                eyes = eye_cascade.detectMultiScale(roi_gray,1.1,3)
+
+                #draw rectangle around each eye
+                for (ex,ey,ew,eh) in eyes:
+                    cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+
             # below code takes the frame and converts into a buffer that can be displayed on screen
             ret, buffer = cv2.imencode('.jpg', frame)
             # convert buffer to bytes
