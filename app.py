@@ -11,7 +11,7 @@ def generate_frames():
         if not success:
             break
         else:
-
+            
             #create detectors based on the haarcascade xmls
             face_cascade=cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_default.xml')
             eye_cascade=cv2.CascadeClassifier('Haarcascades/haarcascade_eye.xml')
